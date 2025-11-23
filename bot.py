@@ -315,6 +315,7 @@ COMPLETIONIST_ROLE_META = {
         "emoji": "<:CompletionistToken:1442196499541790751>",=
         "image": "https://example.com/legendary.png"
     },
+}
 
 COMPLETIONIST_THREAD_ID = 1442185694767349812
 ONBOARDING_LINK = "https://discord.com/channels/1440700385525239950/customize-community"
@@ -373,6 +374,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
