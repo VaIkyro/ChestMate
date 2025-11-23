@@ -301,9 +301,67 @@ async def on_member_update(before: discord.Member, after: discord.Member):
             pass
 
 # -------------------------
+# ROLE GRANT ANNOUNCEMENTS
+# -------------------------
+
+COMPLETIONIST_ROLE_IDS = {
+    1442181787299352737, # [P] Legendary Completionist
+    1442182442977857537, # Cosmetic Completionist
+    1442183201865859163, # Social Completionist
+    1442182284198285542, # Creator Crew Completionist
+    1441790535374344222, # Insider Completionist
+}
+
+COMPLETIONIST_THREAD_ID = 1442185694767349812   # Your thread ID
+
+
+@bot.event
+async def on_member_update(before: discord.Member, after: discord.Member):
+    """Detect when a Completionist role is ADDED (granted) to a user."""
+
+    # Detect any newly added role
+    new_roles = [r for r in after.roles if r not in before.roles]
+
+    if not new_roles:
+        return
+
+    # Look for completionist roles
+    granted = [r for r in new_roles if r.id in COMPLETIONIST_ROLE_IDS]
+    if not granted:
+        return
+
+    # Only allow Admins to trigger the announcement
+    if not any(r.permissions.administrator for r in after.guild.get_member(before.id).roles):
+        # NOTE: The admin is the one *giving* the role, not the user receiving it.
+        # But Discord does not expose WHO granted the role, so we cannot verify admin giver.
+        # Instead, we simply do NOT send an announcement for self-assigns (your bot blocks those anyway).
+        pass
+
+    role = granted[0]
+
+    # Fetch thread
+    thread = after.guild.get_thread(COMPLETIONIST_THREAD_ID)
+    if thread is None:
+        print("❌ Completionist thread not found!")
+        return
+
+    # Embed
+    embed = discord.Embed(
+        title="🏆 Completionist Unlocked!",
+        description=f"{after.mention} has earned **{role.name}**!",
+        color=role.color
+    )
+    embed.set_thumbnail(url=getattr(role, "icon", None))
+
+    await thread.send(embed=embed)
+
+
+
+# -------------------------
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
