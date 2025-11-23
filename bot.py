@@ -304,7 +304,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # ROLE GRANT ANNOUNCEMENTS
 # -------------------------
 
-GA = "https://raw.githubusercontent.com/VaIkyro/ChestMate/main/assets/
+GA = "https://raw.githubusercontent.com/VaIkyro/ChestMate/main/assets/"
 
 COMPLETIONIST_ROLE_META = {
     1441790535374344222: {  # Insider Completionist
@@ -376,6 +376,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
