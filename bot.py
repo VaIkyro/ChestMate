@@ -348,7 +348,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 
     # Embed
     embed = discord.Embed(
-        description=f"{meta['emoji']}# {meta['equip_name']}{meta['emoji']}",
+        description=f"# {meta['emoji']}{meta['equip_name']}{meta['emoji']}",
         color=role.color
     )
 
@@ -374,6 +374,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
