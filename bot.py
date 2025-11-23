@@ -343,7 +343,6 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 
     # Embed (without mentioning the user)
     embed = discord.Embed(
-        title="🏆 Completionist Unlocked!",
         description=f"# {role.name}",  # Only the role in # format
         color=role.color
     )
@@ -351,12 +350,12 @@ async def on_member_update(before: discord.Member, after: discord.Member):
     # Two-column fields
     embed.add_field(
         name="**To Customise Your Profile:**",
-        value=f"{ONBOARDING_LINK}",
+        value=f"[Channels & Roles]({ONBOARDING_LINK})",
         inline=True
     )
     embed.add_field(
         name="**Fellow Completionists:**",
-        value=f"{fellow_count} members have this role.",
+        value=f"{fellow_count} members.",
         inline=True
     )
 
@@ -370,6 +369,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
