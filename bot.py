@@ -304,11 +304,13 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # ROLE GRANT ANNOUNCEMENTS
 # -------------------------
 
+GA = "https://raw.githubusercontent.com/VaIkyro/ChestMate/main/assets/
+
 COMPLETIONIST_ROLE_META = {
     1441790535374344222: {  # Insider Completionist
         "equip_name": "Insider Inspector",
-        "emoji": "<:InsiderToken:1442196493116117067>",
-        "image": "https://example.com/insider.png"
+        "emoji": GA("InsiderToken.png"),
+        "image": GA("InspectorBanner.png")
     },
     1442181787299352737: {  # [P] Legendary Completionist
         "equip_name": "Legendary Completionist",
@@ -374,6 +376,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
