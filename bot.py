@@ -312,7 +312,7 @@ COMPLETIONIST_ROLE_META = {
     },
     1442181787299352737: {  # [P] Legendary Completionist
         "equip_name": "Legendary Completionist",
-        "emoji": "<:CompletionistToken:1442196499541790751>",=
+        "emoji": "<:CompletionistToken:1442196499541790751>",
         "image": "https://example.com/legendary.png"
     },
 }
@@ -374,6 +374,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
