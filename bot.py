@@ -209,7 +209,7 @@ async def offer_cmd(interaction: discord.Interaction,
         # -------------------------
         if not view.entrants:
             return await msg.reply(
-                "- None — no one entered this offer.\n"
+                "No Entrants - no winner for this offer.\n"
             )
 
         # Pick winners
@@ -258,4 +258,5 @@ async def on_ready():
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
