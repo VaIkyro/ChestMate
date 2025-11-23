@@ -258,7 +258,7 @@ async def on_ready():
 # Enforce Profile Display Role Requirements
 # -------------------------
 
-ROLE_REQUIREMENTS = {
+DISPLAY_ROLE_REQUIREMENTS = {
     # display_role_id : required_completion_role_id
     1441788856432197743: 1442181787299352737, # Legendary Completionist -> [P] Legendary Completionist
     1441788904641659032: 1442182442977857537, # Cosmetic Collector -> Cosmetic Completionist
@@ -270,39 +270,45 @@ ROLE_REQUIREMENTS = {
 @bot.event
 async def on_member_update(before: discord.Member, after: discord.Member):
 
-    before_roles = set(r.id for r in before.roles)
-    after_roles = set(r.id for r in after.roles)
+    # Detect newly added roles
+    new_roles = [r for r in after.roles if r not in before.roles]
 
-    # Find roles that were added
-    added_roles = after_roles - before_roles
+    if not new_roles:
+        return
 
-    for added_role_id in added_roles:
-        if added_role_id in ROLE_REQUIREMENTS:
+    for role in new_roles:
+        # If the added role is not a display role we care about, ignore it
+        if role.id not in DISPLAY_ROLE_REQUIREMENTS:
+            continue
 
-            required_role_id = ROLE_REQUIREMENTS[added_role_id]
+        required_role_id = DISPLAY_ROLE_REQUIREMENTS[role.id]
+        required_role = after.guild.get_role(required_role_id)
 
-            # User does NOT have the required completion role
-            if required_role_id not in after_roles:
+        # User ALREADY qualifies? Good.
+        if required_role in after.roles:
+            return  # do nothing, valid choice
 
-                # Remove the invalid display role
-                role = after.guild.get_role(added_role_id)
-                try:
-                    await after.remove_roles(role, reason="Missing required completion role")
-                except:
-                    pass
+        # User does NOT qualify → remove the role
+        try:
+            await after.remove_roles(role, reason="User not eligible for display role")
+        except:
+            pass
 
-                # Optionally DM them
-                try:
-                    await after.send(
-                        f"You cannot display **{role.name}** unless you have the required completion role."
-                    )
-                except:
-                    pass
+        # DM them explaining what happened
+        try:
+            await after.send(
+                f"You selected **{role.name}**, but you do not have the required role:\n"
+                f"→ {required_role.mention}\n\n"
+                "Once you earn it, you'll be able to display this on your profile."
+            )
+        except:
+            pass
 
 # -------------------------
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
