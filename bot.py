@@ -10,7 +10,7 @@ from typing import Optional
 # -------------------------
 # CONFIG
 # -------------------------
-BT = os.getenv("BT")
+BT = os.getenv("BT")  # Bot token
 
 # -------------------------
 # Allowed Roles + Thumbnails
@@ -55,12 +55,10 @@ intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-
 # -------------------------
 # Offer View
 # -------------------------
 class OfferView(discord.ui.View):
-
     def __init__(self, spots: int, duration_seconds: int, creator: discord.Member):
         super().__init__(timeout=None)
         self.creator = creator
@@ -74,10 +72,7 @@ class OfferView(discord.ui.View):
     @discord.ui.button(label="Join", style=discord.ButtonStyle.success)
     async def join_button(self, interaction, button):
         if interaction.user in self.entrants:
-            return await interaction.response.send_message(
-                "You already joined.", ephemeral=True
-            )
-
+            return await interaction.response.send_message("You already joined.", ephemeral=True)
         self.entrants.append(interaction.user)
         await self.update_embed()
         await interaction.response.send_message("You joined the offer!", ephemeral=True)
@@ -85,28 +80,20 @@ class OfferView(discord.ui.View):
     @discord.ui.button(label="Leave", style=discord.ButtonStyle.danger)
     async def leave_button(self, interaction, button):
         if interaction.user not in self.entrants:
-            return await interaction.response.send_message(
-                "You are not entered.", ephemeral=True
-            )
-
+            return await interaction.response.send_message("You are not entered.", ephemeral=True)
         self.entrants.remove(interaction.user)
         await self.update_embed()
         await interaction.response.send_message("You left the offer!", ephemeral=True)
 
     async def update_embed(self):
-        # Update Entrants field
         for i, field in enumerate(self.embed.fields):
             if field.name == "**Entrants**":
-                self.embed.set_field_at(
-                    i, name="**Entrants**", value=str(len(self.entrants)), inline=True
-                )
+                self.embed.set_field_at(i, name="**Entrants**", value=str(len(self.entrants)), inline=True)
                 break
-
         try:
             await self.message.edit(embed=self.embed, view=self)
         except:
             pass
-
 
 # -------------------------
 # Slash Command: /offer
@@ -125,7 +112,6 @@ async def offer_cmd(interaction: discord.Interaction,
                     description: Optional[str] = None):
 
     await interaction.response.defer(ephemeral=True)
-
     guild = interaction.guild
     channel = interaction.channel
 
@@ -156,73 +142,54 @@ async def offer_cmd(interaction: discord.Interaction,
 
     thumbnail_url = ROLE_EMOJI_MAP.get(valid_roles[0].id) if valid_roles else None
     ping_text = " ".join(role.mention for role in valid_roles) if valid_roles else ""
-
     embed_color = valid_roles[0].color if valid_roles else discord.Color.blue()
+
     embed = discord.Embed(description=full_description, color=embed_color)
     embed.add_field(name="**Spots**", value=str(spots), inline=True)
     embed.add_field(name="**Entrants**", value="0", inline=True)
-
     if thumbnail_url:
         embed.set_thumbnail(url=thumbnail_url)
-
     embed.set_footer(text=f"Ends in {duration}m 0s • Posted by {interaction.user.display_name}")
 
     view = OfferView(spots=spots, duration_seconds=duration * 60, creator=interaction.user)
-
     msg = await channel.send(content=ping_text, embed=embed, view=view)
-
     view.message = msg
     view.embed = embed
     view.original_ping = ping_text
 
-    # -------------------------
-    # Countdown
-    # -------------------------
+    # Countdown task
     async def countdown_task():
         remaining = duration * 60
-
         while remaining > 0:
             mins, secs = divmod(remaining, 60)
             embed.set_footer(text=f"Ends in {mins}m {secs}s • Posted by {interaction.user.display_name}")
-
             try:
                 await msg.edit(embed=embed)
             except:
                 pass
-
             await asyncio.sleep(1)
             remaining -= 1
 
         # Disable buttons
         for child in view.children:
             child.disabled = True
-
         embed.set_footer(text=f"Offer Expired • Posted by {interaction.user.display_name}")
-
         try:
             await msg.edit(content=f"~~{view.original_ping}~~", embed=embed, view=view)
         except:
             pass
 
-        # -------------------------
-        # FIX: No entrants
-        # -------------------------
         if not view.entrants:
-            return await msg.reply(
-                "No Entrants - no winner for this offer.\n"
-            )
+            return await msg.reply("No Entrants - no winner for this offer.\n")
 
-        # Pick winners
         winners = random.sample(view.entrants, min(view.spots, len(view.entrants)))
         winner_lines = "\n".join(f"- {w.mention}" for w in winners)
-
         announcement = (
             f"{view.creator.mention}\n"
             "__**Winner(s):**__\n"
             f"{winner_lines}\n"
             "-# Please respond to this message with your Xbox gamertag!"
         )
-
         await msg.reply(announcement)
 
         # Edit main post with first winner
@@ -237,9 +204,7 @@ async def offer_cmd(interaction: discord.Interaction,
             pass
 
     asyncio.create_task(countdown_task())
-
     await interaction.followup.send("Offer posted!", ephemeral=True)
-
 
 # -------------------------
 # On Ready
@@ -253,11 +218,9 @@ async def on_ready():
     except Exception as e:
         print("Command sync failed:", e)
 
-
 # -------------------------
-# Enforce Profile Display Role Requirements
+# Completionist Role / Display Enforcement
 # -------------------------
-
 DISPLAY_ROLE_REQUIREMENTS = {
     # display_role_id : required_completion_role_id
     1441788856432197743: 1442181787299352737, # Legendary Completionist -> [P] Legendary Completionist
@@ -266,39 +229,6 @@ DISPLAY_ROLE_REQUIREMENTS = {
     1442176819871612938: 1442182284198285542, # Heckled Host -> Creator Crew Completionist
     1441788963923824797: 1441790535374344222, # Insider Inspector -> Insider Completionist
 }
-
-@bot.event
-async def on_member_update(before: discord.Member, after: discord.Member):
-
-    # Check all display roles the user currently has
-    for display_role_id, required_role_id in DISPLAY_ROLE_REQUIREMENTS.items():
-        display_role = after.guild.get_role(display_role_id)
-        required_role = after.guild.get_role(required_role_id)
-
-        if display_role in after.roles:
-            # Does the user have the required completion role?
-            if required_role not in after.roles:
-                # Remove the display role
-                try:
-                    await after.remove_roles(display_role, reason="User not eligible for display role")
-                except Exception as e:
-                    print(f"Failed to remove role {display_role.name} from {after}: {e}")
-
-                # DM the user
-                try:
-                    await after.send(
-                        f"You selected **{display_role.name}**, but you do not have the required role ({required_role.name}).\n"
-                        "Once you earn it, you'll be able to display this on your profile."
-                    )
-                except:
-                    # If DMs are closed, fail silently
-                    pass
-
-# -------------------------
-# ROLE GRANT ANNOUNCEMENTS
-# -------------------------
-
-GA = "https://raw.githubusercontent.com/VaIkyro/ChestMate/main/assets/"
 
 COMPLETIONIST_ROLE_META = {
     1441790535374344222: {  # Insider Completionist
@@ -318,74 +248,51 @@ ONBOARDING_LINK = "https://discord.com/channels/1440700385525239950/customize-co
 
 @bot.event
 async def on_member_update(before: discord.Member, after: discord.Member):
-    """Detect when a Completionist role is ADDED to a user."""
-
-    # Detect newly added roles
+    # -----------------------------------
+    # 1. Handle completionist role announcements
+    # -----------------------------------
     new_roles = [r for r in after.roles if r not in before.roles]
-    if not new_roles:
-        return
+    completionist_roles = [r for r in new_roles if r.id in COMPLETIONIST_ROLE_META]
 
-    # Look for completionist roles
-    granted_roles = [r for r in new_roles if r.id in COMPLETIONIST_ROLE_META]
-    if not granted_roles:
-        return
+    if completionist_roles:
+        role = completionist_roles[0]
+        meta = COMPLETIONIST_ROLE_META[role.id]
+        thread = after.guild.get_thread(COMPLETIONIST_THREAD_ID)
+        if thread:
+            fellow_count = sum(1 for m in after.guild.members if role in m.roles)
+            embed = discord.Embed(
+                description=f"# {meta['emoji']} {meta['equip_name']} {meta['emoji']}",
+                color=role.color
+            )
+            embed.add_field(name="**To Customise Your Profile:**", value=f"[Channels & Roles]({ONBOARDING_LINK})", inline=True)
+            embed.add_field(name="**Fellow Completionists:**", value=f"{fellow_count} sailors.", inline=True)
+            embed.set_image(url=meta['image'])
+            await thread.send(content=after.mention, embed=embed)
 
-    role = granted_roles[0]
-    meta = COMPLETIONIST_ROLE_META[role.id]
+    # -----------------------------------
+    # 2. Enforce display role requirements
+    # -----------------------------------
+    for display_role_id, required_role_id in DISPLAY_ROLE_REQUIREMENTS.items():
+        display_role = after.guild.get_role(display_role_id)
+        required_role = after.guild.get_role(required_role_id)
 
-    # Fetch thread
-    thread = after.guild.get_thread(COMPLETIONIST_THREAD_ID)
-    if thread is None:
-        print("❌ Completionist thread not found!")
-        return
+        if display_role in after.roles and required_role not in after.roles:
+            # Remove role
+            try:
+                await after.remove_roles(display_role, reason="User does not have prerequisite role")
+            except Exception as e:
+                print(f"Failed to remove {display_role.name} from {after}: {e}")
 
-    # Count how many members have this role
-    fellow_count = sum(1 for member in after.guild.members if role in member.roles)
-
-    # Embed
-    embed = discord.Embed(
-        description=f"# {meta['emoji']} {meta['equip_name']} {meta['emoji']}",
-        color=role.color
-    )
-
-    # Two-column fields
-    embed.add_field(
-        name="**To Customise Your Profile:**",
-        value=f"[Channels & Roles]({ONBOARDING_LINK})",
-        inline=True
-    )
-    embed.add_field(
-        name="**Fellow Completionists:**",
-        value=f"{fellow_count} sailors.",
-        inline=True
-    )
-
-    # Set footer image
-    embed.set_image(url=meta['image'])
-
-    # Mention user outside embed
-    await thread.send(content=after.mention, embed=embed)
+            # DM the user
+            try:
+                await after.send(
+                    f"You selected **{display_role.name}**, but you do not have the required role ({required_role.name}).\n"
+                    "Once you earn it, you'll be able to display this on your profile."
+                )
+            except:
+                pass
 
 # -------------------------
 # Run Bot
 # -------------------------
 bot.run(BT)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
