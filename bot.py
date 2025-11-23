@@ -270,35 +270,29 @@ DISPLAY_ROLE_REQUIREMENTS = {
 @bot.event
 async def on_member_update(before: discord.Member, after: discord.Member):
 
-    # Detect newly added roles
-    new_roles = [r for r in after.roles if r not in before.roles]
+    # Check all display roles the user currently has
+    for display_role_id, required_role_id in DISPLAY_ROLE_REQUIREMENTS.items():
+        display_role = after.guild.get_role(display_role_id)
+        required_role = after.guild.get_role(required_role_id)
 
-    if not new_roles:
-        return
+        if display_role in after.roles:
+            # Does the user have the required completion role?
+            if required_role not in after.roles:
+                # Remove the display role
+                try:
+                    await after.remove_roles(display_role, reason="User not eligible for display role")
+                except Exception as e:
+                    print(f"Failed to remove role {display_role.name} from {after}: {e}")
 
-    for role in new_roles:
-        # If the added role is not a display role we care about, ignore it
-        if role.id not in DISPLAY_ROLE_REQUIREMENTS:
-            continue
-
-        # User ALREADY qualifies? Good.
-        if required_role in after.roles:
-            return  # do nothing, valid choice
-
-        # User does NOT qualify → remove the role
-        try:
-            await after.remove_roles(role, reason="User not eligible for display role")
-        except:
-            pass
-
-        # DM them explaining what happened
-        try:
-            await after.send(
-                f"You selected **{role.name}**, but you do not have the required role.\n"
-                "Once you earn it, you'll be able to display this on your profile."
-            )
-        except:
-            pass
+                # DM the user
+                try:
+                    await after.send(
+                        f"You selected **{display_role.name}**, but you do not have the required role ({required_role.name}).\n"
+                        "Once you earn it, you'll be able to display this on your profile."
+                    )
+                except:
+                    # If DMs are closed, fail silently
+                    pass
 
 # -------------------------
 # ROLE GRANT ANNOUNCEMENTS
@@ -376,6 +370,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
