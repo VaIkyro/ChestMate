@@ -313,7 +313,7 @@ COMPLETIONIST_ROLE_IDS = {
 }
 
 COMPLETIONIST_THREAD_ID = 1442185694767349812   # Your thread ID
-CHANNELS_ROLES_LINK = "https://discord.com/channels/1440700385525239950/<id:customize>"  # Onboarding Channels & Roles link
+CHANNELS_ROLES_LINK = "https://discord.com/channels/1440700385525239950/customize-community"  # Onboarding Channels & Roles link
 DEFAULT_IMAGE_URL = "https://example.com/completionist.png"  # Default image
 
 @bot.event
@@ -341,17 +341,17 @@ async def on_member_update(before: discord.Member, after: discord.Member):
     # Count how many members have this role
     fellow_count = sum(1 for member in after.guild.members if role in member.roles)
 
-    # Embed
+    # Embed (without mentioning the user)
     embed = discord.Embed(
         title="🏆 Completionist Unlocked!",
-        description=f"{after.mention}\n`#{role.name}`",
+        description=f"# {role.name}",  # Only the role in # format
         color=role.color
     )
 
     # Two-column fields
     embed.add_field(
         name="**To Customise Your Profile:**",
-        value=f"[Go to Channels & Roles]({CHANNELS_ROLES_LINK}) to customise your channels & roles.",
+        value=f"[Open Onboarding]({ONBOARDING_LINK}) to choose your channels & roles.",
         inline=True
     )
     embed.add_field(
@@ -363,12 +363,14 @@ async def on_member_update(before: discord.Member, after: discord.Member):
     # Set image at bottom
     embed.set_image(url=getattr(role, "icon", DEFAULT_IMAGE_URL))
 
-    await thread.send(embed=embed)
+    # Send the message, mentioning the user outside the embed
+    await thread.send(content=after.mention, embed=embed)
 
 # -------------------------
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
