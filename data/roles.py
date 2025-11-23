@@ -14,202 +14,202 @@ ROLE_DATA = {
         "emoji": emoji_url(1440782784191926344)},
     1441791745737232384: {
         "name": "Ashen Winds",
-        "emoji": },
+        "emoji": None},
     1441793409286406174: {
         "name": "Athena's Fortune",
-        "emoji": },
+        "emoji": None},
     1441791762749460601: {
         "name": "Barnacled Dread",
-        "emoji": },
+        "emoji": None},
     1441792692190187691: {
         "name": "Barnacle Chests",
-        "emoji": },
+        "emoji": None},
     1441791511489417378: {
         "name": "Bilge Rats",
-        "emoji": },
+        "emoji": None},
     1441793277236875304: {
         "name": "Boar Tusks",
-        "emoji": },
+        "emoji": None},
     1441791898997231798: {
         "name": "Bone Callers",
-        "emoji": },
+        "emoji": None},
     1441791781636280351: {
         "name": "Burning Blade",
         "emoji": emoji_url(1441902687976427690)},
     1441792858943393925: {
         "name": "Cannonball Crate",
-        "emoji": },
+        "emoji": None},
     1441792878803288084: {
         "name": "Cargo",
-        "emoji": },
+        "emoji": None},
     1441792604135100497: {
         "name": "Chest of Bones",
-        "emoji": },
+        "emoji": None},
     1441791987123622019: {
         "name": "Chest of Fortune",
-        "emoji": },
+        "emoji": None},
     1441792712054669413: {
         "name": "Chests of Sorrow",
-        "emoji": },
+        "emoji": None},
     1441792738814066759: {
         "name": "Chests of a Thousand Grogs",
-        "emoji": },
+        "emoji": None},
     1441792894682927294: {
         "name": "Commodities",
-        "emoji": },
+        "emoji": None},
     1441793472008032310: {
         "name": "Crested Queen",
         "emoji": emoji_url(1441902764711088179)},
     1441791931356156037: {
         "name": "Cursed Iron",
-        "emoji": },
+        "emoji": None},
     1441793187340619867: {
         "name": "Cursed Crews",
-        "emoji": },
+        "emoji": None},
     1441792913813143686: {
         "name": "Devil's Roar Cargo",
-        "emoji": },
+        "emoji": None},
     1441792545746321570: {
         "name": "Emissary Flags",
         "emoji": emoji_url(1441902717332099232)},
     1441793790938448014: {
         "name": "Emissary Grades",
-        "emoji": },
+        "emoji": None},
     1441794009621332048: {
         "name": "Faction Hero Treasure",
-        "emoji": },
+        "emoji": None},
     1441791800900714648: {
         "name": "Feared Redmaw",
         "emoji": emoji_url(1441902709472231444)},
     1441792940795232266: {
         "name": "Fruit Crate",
-        "emoji": },
+        "emoji": None},
     1441792009370337340: {
         "name": "Gifts",
-        "emoji": },
+        "emoji": None},
     1441792668983365682: {
         "name": "Gold Hoarder",
-        "emoji": },
+        "emoji": None},
     1441793210828460153: {
         "name": "Ghost Ships",
-        "emoji": },
+        "emoji": None},
     1441793360330490060: {
         "name": "Guardians of Fortune",
-        "emoji": },
+        "emoji": None},
     1441792961951305728: {
         "name": "Gunpowder Barrels",
-        "emoji": },
+        "emoji": None},
     1441792025589710939: {
         "name": "Horn of Fair Winds",
-        "emoji": },
+        "emoji": None},
     1441793455054651565: {
         "name": "Hungering One",
         "emoji": emoji_url(1441902756729323723)},
     1441793258698313748: {
         "name": "Hunter's Call",
-        "emoji": },
+        "emoji": None},
     1441794111534403584: {
         "name": "Insider Activities",
-        "emoji": },
+        "emoji": None},
     1441792052063895602: {
         "name": "Kingly Treasure",
         "emoji": emoji_url(1441902725347541103)},
     1441791824128638976: {
         "name": "Krakens",
-        "emoji": },
+        "emoji": None},
     1441793431679537173: {
         "name": "Legend of the Veil",
-        "emoji": },
+        "emoji": None},
     1441794033109303416: {
         "name": "Limited Time Events",
-        "emoji": },
+        "emoji": None},
     1441792987507068979: {
         "name": "Lost Shipments",
-        "emoji": },
+        "emoji": None},
     1441792827133526210: {
         "name": "Merchant Alliance",
-        "emoji": },
+        "emoji": None},
     1441793295435956285: {
         "name": "Megalodon Scales",
-        "emoji": },
+        "emoji": None},
     1441793318185996428: {
         "name": "Megalodon Teeth",
-        "emoji": },
+        "emoji": None},
     1441794089291878422: {
         "name": "Nautical Miles",
-        "emoji": },
+        "emoji": None},
     1441792074100768959: {
         "name": "Orb of Secrets",
-        "emoji": },
+        "emoji": None},
     1441793159184121919: {
         "name": "Order of Souls",
-        "emoji": },
+        "emoji": None},
     1441792094279565393: {
         "name": "Rag & Bone Crates",
-        "emoji": },
+        "emoji": None},
     1441792507515240488: {
         "name": "Reaper's Bones",
-        "emoji": },
+        "emoji": None},
     1441792564293275808: {
         "name": "Reaper's Chests",
-        "emoji": },
+        "emoji": None},
     1441792172587483379: {
         "name": "Reaper Fortresses",
-        "emoji": },
+        "emoji": None},
     1441792624318218292: {
         "name": "Reaper Urn",
-        "emoji": },
+        "emoji": None},
     1441791958476652614: {
         "name": "Scattershots",
-        "emoji": },
+        "emoji": None},
     1441791845138038824: {
         "name": "Sea Fortresses",
-        "emoji": },
+        "emoji": None},
     1441794132547866634: {
         "name": "Sea of Thieves Drama",
-        "emoji": },
+        "emoji": None},
     1441793383776387213: {
         "name": "Servants of the Flame",
         "emoji": emoji_url(1441902748147908689)},
     1441793491540906116: {
         "name": "Shadowmaw",
-        "emoji": },
+        "emoji": None},
     1441793507844165733: {
         "name": "Shrouded Ghost",
-        "emoji": },
+        "emoji": None},
     1441793228885065808: {
         "name": "Skeleton Forts",
-        "emoji": },
+        "emoji": None},
     1441793545068482754: {
         "name": "Skeleton Ships",
-        "emoji": },
+        "emoji": None},
     1441792583498989568: {
         "name": "Skull of Banished",
-        "emoji": },
+        "emoji": None},
     1441792120091316386: {
         "name": "Skull of Siren's Song",
-        "emoji": },
+        "emoji": None},
     1441792145789812827: {
         "name": "Smuggler's Chronicles",
-        "emoji": },
+        "emoji": None},
     1441793567986159789: {
         "name": "Stronghold Treasures",
-        "emoji": },
+        "emoji": None},
     1441791865991987230: {
         "name": "Sunken Kingdom",
-        "emoji": },
+        "emoji": None},
     1441794053652877364: {
         "name": "Tall Tales",
-        "emoji": },
+        "emoji": None},
     1441792780270567505: {
         "name": "Vaults of the Ancients",
-        "emoji": },
+        "emoji": None},
     1441794069419524228: {
         "name": "Voyage Completions",
-        "emoji": },
+        "emoji": None},
     1441793007262109767: {
         "name": "Wood Crate",
-        "emoji": },
+        "emoji": None},
 }
 
 ALLOWED_ITEM_ROLES = list(ROLE_DATA.keys())
