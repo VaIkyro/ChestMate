@@ -313,31 +313,24 @@ COMPLETIONIST_ROLE_IDS = {
 }
 
 COMPLETIONIST_THREAD_ID = 1442185694767349812   # Your thread ID
-
+CHANNELS_ROLES_LINK = "https://discord.com/channels/1440700385525239950/<id:customize>"  # Onboarding Channels & Roles link
+DEFAULT_IMAGE_URL = "https://example.com/completionist.png"  # Default image
 
 @bot.event
 async def on_member_update(before: discord.Member, after: discord.Member):
-    """Detect when a Completionist role is ADDED (granted) to a user."""
+    """Detect when a Completionist role is ADDED to a user."""
 
-    # Detect any newly added role
+    # Detect newly added roles
     new_roles = [r for r in after.roles if r not in before.roles]
-
     if not new_roles:
         return
 
     # Look for completionist roles
-    granted = [r for r in new_roles if r.id in COMPLETIONIST_ROLE_IDS]
-    if not granted:
+    granted_roles = [r for r in new_roles if r.id in COMPLETIONIST_ROLE_IDS]
+    if not granted_roles:
         return
 
-    # Only allow Admins to trigger the announcement
-    if not any(r.permissions.administrator for r in after.guild.get_member(before.id).roles):
-        # NOTE: The admin is the one *giving* the role, not the user receiving it.
-        # But Discord does not expose WHO granted the role, so we cannot verify admin giver.
-        # Instead, we simply do NOT send an announcement for self-assigns (your bot blocks those anyway).
-        pass
-
-    role = granted[0]
+    role = granted_roles[0]
 
     # Fetch thread
     thread = after.guild.get_thread(COMPLETIONIST_THREAD_ID)
@@ -345,22 +338,38 @@ async def on_member_update(before: discord.Member, after: discord.Member):
         print("❌ Completionist thread not found!")
         return
 
+    # Count how many members have this role
+    fellow_count = sum(1 for member in after.guild.members if role in member.roles)
+
     # Embed
     embed = discord.Embed(
         title="🏆 Completionist Unlocked!",
-        description=f"{after.mention} has earned **{role.name}**!",
+        description=f"{after.mention}\n`#{role.name}`",
         color=role.color
     )
-    embed.set_thumbnail(url=getattr(role, "icon", None))
+
+    # Two-column fields
+    embed.add_field(
+        name="**To Customise Your Profile:**",
+        value=f"[Go to Channels & Roles]({CHANNELS_ROLES_LINK}) to customise your channels & roles.",
+        inline=True
+    )
+    embed.add_field(
+        name="**Fellow Completionists:**",
+        value=f"{fellow_count} members have this role.",
+        inline=True
+    )
+
+    # Set image at bottom
+    embed.set_image(url=getattr(role, "icon", DEFAULT_IMAGE_URL))
 
     await thread.send(embed=embed)
-
-
 
 # -------------------------
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
