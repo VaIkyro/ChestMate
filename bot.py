@@ -6,47 +6,12 @@ import asyncio
 import random
 import re
 from typing import Optional
+from data.roles import ALLOWED_ITEM_ROLES, ROLE_EMOJI_MAP
 
 # -------------------------
 # CONFIG
 # -------------------------
 BT = os.getenv("BT")  # Bot token
-
-# -------------------------
-# Allowed Roles + Thumbnails
-# -------------------------
-CDN = "https://cdn.discordapp.com/emojis/"
-
-
-def emoji_url(emoji_id: int):
-    return f"{CDN}/{emoji_id}.png?size=96&quality=lossless"
-
-
-ALLOWED_ITEM_ROLES = {
-    1440783102711562260: "Animals",
-    1440778289986670746: "Ancient Terror",
-    1441791781636280351: "Burning Blade",
-    1441793472008032310: "Crested Queen",
-    1441792913813143686: "Devil's Roar Cargo",
-    1441792545746321570: "Emissary Flags",
-    1441791800900714648: "Feared Redmaw",
-    1441793455054651565: "Hungering One",
-    1441792052063895602: "Kingly Treasure",
-    1441793383776387213: "Servants of the Flame",
-}
-
-ROLE_EMOJI_MAP = {
-    1440783102711562260: emoji_url(1440781781342093423),
-    1440778289986670746: emoji_url(1440782784191926344),
-    1441791781636280351: emoji_url(1441902687976427690),
-    1441793472008032310: emoji_url(1441902764711088179),
-    1441792913813143686: emoji_url(1441902739306053654),
-    1441792545746321570: emoji_url(1441902717332099232),
-    1441791800900714648: emoji_url(1441902709472231444),
-    1441793455054651565: emoji_url(1441902756729323723),
-    1441792052063895602: emoji_url(1441902725347541103),
-    1441793383776387213: emoji_url(1441902748147908689),
-}
 
 # -------------------------
 # Bot Setup
@@ -243,7 +208,7 @@ COMPLETIONIST_ROLE_META = {
     },
 }
 
-COMPLETIONIST_THREAD_ID = 1442185694767349812
+COMPLETIONIST_THREAD_ID = 1442249455041642648
 ONBOARDING_LINK = "https://discord.com/channels/1440700385525239950/customize-community"
 
 @bot.event
@@ -296,4 +261,5 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
