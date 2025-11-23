@@ -105,7 +105,10 @@ async def offer_cmd(interaction: discord.Interaction,
     if description:
         full_description += f"\n{description}"
 
-    thumbnail_url = ROLE_EMOJI_MAP.get(valid_roles[0].id) if valid_roles else None
+    thumbnail_url = None
+    if valid_roles:
+        thumbnail_url = ROLE_EMOJI_MAP.get(valid_roles[0].id)
+
     ping_text = " ".join(role.mention for role in valid_roles) if valid_roles else ""
     embed_color = valid_roles[0].color if valid_roles else discord.Color.blue()
 
@@ -261,5 +264,6 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
