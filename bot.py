@@ -313,7 +313,7 @@ COMPLETIONIST_ROLE_IDS = {
 }
 
 COMPLETIONIST_THREAD_ID = 1442185694767349812   # Your thread ID
-CHANNELS_ROLES_LINK = "https://discord.com/channels/1440700385525239950/customize-community"  # Onboarding Channels & Roles link
+ONBOARDING_LINK = "https://discord.com/channels/1440700385525239950/customize-community"  # Onboarding Channels & Roles link
 DEFAULT_IMAGE_URL = "https://example.com/completionist.png"  # Default image
 
 @bot.event
@@ -351,7 +351,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
     # Two-column fields
     embed.add_field(
         name="**To Customise Your Profile:**",
-        value=f"[Open Onboarding]({ONBOARDING_LINK}) to choose your channels & roles.",
+        value=f"{ONBOARDING_LINK}",
         inline=True
     )
     embed.add_field(
@@ -370,6 +370,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
