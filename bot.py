@@ -281,9 +281,6 @@ async def on_member_update(before: discord.Member, after: discord.Member):
         if role.id not in DISPLAY_ROLE_REQUIREMENTS:
             continue
 
-        required_role_id = DISPLAY_ROLE_REQUIREMENTS[role.id]
-        required_role = after.guild.get_role(required_role_id)
-
         # User ALREADY qualifies? Good.
         if required_role in after.roles:
             return  # do nothing, valid choice
@@ -297,8 +294,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
         # DM them explaining what happened
         try:
             await after.send(
-                f"You selected **{role.name}**, but you do not have the required role:\n"
-                f"→ {required_role.mention}\n\n"
+                f"You selected **{role.name}**, but you do not have the required role.\n"
                 "Once you earn it, you'll be able to display this on your profile."
             )
         except:
@@ -308,6 +304,7 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
