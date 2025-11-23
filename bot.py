@@ -304,17 +304,20 @@ async def on_member_update(before: discord.Member, after: discord.Member):
 # ROLE GRANT ANNOUNCEMENTS
 # -------------------------
 
-COMPLETIONIST_ROLE_IDS = {
-    1442181787299352737, # [P] Legendary Completionist
-    1442182442977857537, # Cosmetic Completionist
-    1442183201865859163, # Social Completionist
-    1442182284198285542, # Creator Crew Completionist
-    1441790535374344222, # Insider Completionist
-}
+COMPLETIONIST_ROLE_META = {
+    1441790535374344222: {  # Insider Completionist
+        "equip_name": "Insider Inspector",
+        "emoji": "<:InsiderToken:1442196493116117067>",
+        "image": "https://example.com/insider.png"
+    },
+    1442181787299352737: {  # [P] Legendary Completionist
+        "equip_name": "Legendary Completionist",
+        "emoji": "<:CompletionistToken:1442196499541790751>",=
+        "image": "https://example.com/legendary.png"
+    },
 
-COMPLETIONIST_THREAD_ID = 1442185694767349812   # Your thread ID
-ONBOARDING_LINK = "https://discord.com/channels/1440700385525239950/customize-community"  # Onboarding Channels & Roles link
-DEFAULT_IMAGE_URL = "https://example.com/completionist.png"  # Default image
+COMPLETIONIST_THREAD_ID = 1442185694767349812
+ONBOARDING_LINK = "https://discord.com/channels/1440700385525239950/customize-community"
 
 @bot.event
 async def on_member_update(before: discord.Member, after: discord.Member):
@@ -326,11 +329,12 @@ async def on_member_update(before: discord.Member, after: discord.Member):
         return
 
     # Look for completionist roles
-    granted_roles = [r for r in new_roles if r.id in COMPLETIONIST_ROLE_IDS]
+    granted_roles = [r for r in new_roles if r.id in COMPLETIONIST_ROLE_META]
     if not granted_roles:
         return
 
     role = granted_roles[0]
+    meta = COMPLETIONIST_ROLE_META[role.id]
 
     # Fetch thread
     thread = after.guild.get_thread(COMPLETIONIST_THREAD_ID)
@@ -341,9 +345,9 @@ async def on_member_update(before: discord.Member, after: discord.Member):
     # Count how many members have this role
     fellow_count = sum(1 for member in after.guild.members if role in member.roles)
 
-    # Embed (without mentioning the user)
+    # Embed
     embed = discord.Embed(
-        description=f"# {role.name}",  # Only the role in # format
+        description=f"{meta['emoji']}# {meta['equip_name']}{meta['emoji']}",
         color=role.color
     )
 
@@ -355,20 +359,21 @@ async def on_member_update(before: discord.Member, after: discord.Member):
     )
     embed.add_field(
         name="**Fellow Completionists:**",
-        value=f"{fellow_count} members.",
+        value=f"{fellow_count} sailors.",
         inline=True
     )
 
-    # Set image at bottom
-    embed.set_image(url=getattr(role, "icon", DEFAULT_IMAGE_URL))
+    # Set footer image
+    embed.set_image(url=meta['image'])
 
-    # Send the message, mentioning the user outside the embed
+    # Mention user outside embed
     await thread.send(content=after.mention, embed=embed)
 
 # -------------------------
 # Run Bot
 # -------------------------
 bot.run(BT)
+
 
 
 
